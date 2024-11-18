@@ -3,10 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Lead>
- */
 class LeadFactory extends Factory
 {
     /**
@@ -17,9 +15,11 @@ class LeadFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name,
-            'email' => fake()->email,
-            'phone' => fake()->phoneNumber
+            'uuid' => Str::uuid(),
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->optional()->phoneNumber,
+            'score' => $this->faker->optional()->numberBetween(1, 100)
         ];
     }
 }

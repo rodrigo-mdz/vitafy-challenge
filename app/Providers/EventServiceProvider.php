@@ -19,14 +19,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        LeadCreated::class => [
-            CreateClient::class,
-            GetScore::class
+        \App\Events\LeadCreatedOrUpdated::class => [
+            \App\Listeners\UpdateLeadScore::class,
         ],
-        LeadUpdated::class => [
-            GetScore::class
-        ]
     ];
+
 
     /**
      * Register any events for your application.

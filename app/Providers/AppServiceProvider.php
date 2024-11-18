@@ -3,26 +3,22 @@
 namespace App\Providers;
 
 use App\Contracts\LeadScoringServiceInterface;
+use App\Repositories\LeadRepository;
+use App\Repositories\LeadRepositoryInterface;
 use App\Services\LeadScoringService;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
+    public function register()
     {
-        //
+        $this->app->bind(LeadRepositoryInterface::class, LeadRepository::class);
+        $this->app->bind(LeadScoringServiceInterface::class, LeadScoringService::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+    public function boot()
     {
-        $this->app->bind(LeadScoringServiceInterface::class, config('iahorro.lead_scoring_service_class'));
         JsonResource::withoutWrapping();
     }
 }

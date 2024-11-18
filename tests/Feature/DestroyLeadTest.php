@@ -1,6 +1,4 @@
 <?php
-
-
 use App\Models\Client;
 use App\Models\Lead;
 use Illuminate\Support\Str;

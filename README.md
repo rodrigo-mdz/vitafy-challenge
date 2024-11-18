@@ -1,28 +1,82 @@
-# Vitafy Challenge
+# Vitafy Challenge-<Rodrigo.L>
 
-## Resumen
-El propósito de este desafío es poder verificar los conocimientos relativos a la abstracción de estructuras de datos, desacople y escalabilidad de una aplicación.
+Requisitos
+PHP: 8.3
+Laravel: 11.x
+MySQL: 8.x
 
-### Proyecto
-El proyecto es un CRUD de leads, donde se podrá registrar un lead junto con un cliente, actualizarlo y eliminarlo. Cada lead debe conectar con un servicio de scoring para obtener el score de un cliente.
-Está realizado en Laravel 11 y PHP 8.3, incluye migraciones, factories, rutas API y tests.
+Instrucciones para poner en marcha el proyecto
+1. Clonar el repositorio
+git clone https://github.com/tu-usuario/vitafy-challenge.git
+cd vitafy-challenge
 
-### Tests
-Los tests están escritos de tal manera que pueda verificarse si el desarrollo de la aplicación está completo y no hay ninguna falla en el camino.
+2. Instalar dependencias
+composer install
 
-### Desarrollo
-- Crear un LeadController encargado de realizar las operaciones CRUD necesarias.
-- Un cliente debe crearse luego de crear un lead.
-- Obtener el score luego de crear o actualizar un lead.
-- Crear un trait HasUuid para que cada modelo se cree con un UUID por defecto, como se puede ver en las migraciones.
-- Crear un servicio LeadScoringService con un método getLeadScore.
+3. Configurar las variables de entorno
+Renombrar el archivo .env.example a .env y configurar las variables de entorno.
 
-## Plazos
-48 horas desde la recepción del desafío.
+Generar la clave de la aplicación:
 
-## Entrega
-- El desafío debe ser entregado a traves de un repositorio en GitHub con el siguiente formato:
-vitafy-challenge-<nombre-apellido>
-- Se pueden realizar tantos commits como se quieran.
-- Detallar instrucciones a seguir para poner en marcha el proyecto y realizar pruebas necesarias.
-- Explicar la implementación y desarrollo de la solución, así como las decisiones de diseño tomadas para llevar a cabo el desafío y cualquier otra información relevante que amerite describir.
+php artisan key:generate
+
+4. Configurar la base de datos
+Crear la base de datos vitafy en MySQL:
+sql
+CREATE DATABASE vitafy;
+
+Migrar las tablas y ejecutar las seeders
+php artisan migrate --seed
+
+5. Ejecutar el servidor
+Iniciar el servidor local de Laravel:
+
+
+php artisan serve
+La API estará disponible en http://127.0.0.1:8000.
+
+Pruebas Unitarias
+Para ejecutar los tests del proyecto, utiliza el siguiente comando:
+
+php artisan test
+
+Decisiones de Diseño
+1. Separación de responsabilidades
+La lógica de negocio está encapsulada en servicios (por ejemplo, LeadService) para mantener los controladores ligeros y enfocados en la orquestación de procesos.
+2. Uso del patrón Repository
+Este patrón permite desacoplar la lógica de acceso a datos de la lógica de negocio, facilitando pruebas unitarias y posibles cambios en la fuente de datos en el futuro.
+3. Eventos y Listeners
+Se implementaron eventos (LeadUpdatedOrCreated) y listeners (UpdateLeadScore) para calcular el score de forma independiente después de la creación o actualización de un lead.
+4. Uso de interfaces
+Se implementaron interfaces (LeadRepositoryInterface, LeadScoringServiceInterface) para garantizar el desacoplamiento entre los servicios y los repositorios. Esto facilita el mantenimiento y la posibilidad de cambiar implementaciones en el futuro sin afectar otras capas del sistema.
+5. Validaciones centralizadas
+Las reglas de validación están definidas en clases de request (StoreLeadRequest y UpdateLeadRequest) para mantener la lógica clara y reutilizable.
+
+Endpoints de la API
+1. Crear un Lead
+
+POST /api/leads
+Body:
+json
+
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "phone": "123-456-7890"
+}
+2. Actualizar un Lead
+
+PUT /api/leads/{uuid}
+Body:
+json
+
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "phone": "987-654-3210"
+}
+3. Obtener un Lead
+GET /api/leads/{uuid}
+
+4. Eliminar un Lead
+DELETE /api/leads/{uuid}
