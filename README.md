@@ -7,7 +7,7 @@ MySQL: 8.x
 
 Instrucciones para poner en marcha el proyecto
 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/vitafy-challenge.git
+git clone git@github.com:rodrigo-mdz/vitafy-challenge.git
 cd vitafy-challenge
 
 2. Instalar dependencias
